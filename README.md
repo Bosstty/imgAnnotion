@@ -19,8 +19,8 @@
 ### 1. 克隆项目
 
 ```bash
-git clone https://github.com/your-repo/image-annotation-platform.git
-cd image-annotation-platform
+git clone https://github.com/Bosstty/imgAnnotion.git
+cd imgAnnotion
 ```
 
 ### 2. 安装依赖
@@ -29,21 +29,13 @@ cd image-annotation-platform
 yarn install
 ```
 
-### 3. 启动开发环境
+### 3. 启动
 
 ```bash
-yarn dev
+yarn serve
 ```
 
-打开浏览器访问：`http://localhost:3000`
-
-### 4. 打包构建
-
-```bash
-yarn build
-```
-
-生成的静态文件在 `dist/` 目录下，可直接部署到静态服务器 。
+打开浏览器访问：`http://localhost:8080`
 
 ## 📖 使用流程
 
@@ -68,3 +60,5 @@ dataset.zip
 ├── annotations.xml      # Pascal VOC 格式
 └── annotations.json     # COCO 格式
 ```
+
+导出的数据 基本上可以直接用作模型训练。
