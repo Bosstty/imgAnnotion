@@ -1059,7 +1059,6 @@ export default {
             this.panX = 0;
             this.panY = 0;
 
-            
             this.statusText = '图片已居中';
             this.statusClass = 'success';
 
@@ -1115,16 +1114,21 @@ export default {
             switch (action) {
                 case 'delete':
                     if (this.selectedAnnotationId) {
-                        if (confirm('确定要删除这个标注吗？')) {
-                            this.$emit('annotation-deleted', this.selectedAnnotationId);
-                            this.statusText = '标注已删除';
-                            this.statusClass = 'success';
-                            this.$emit('message', { type: 'success', message: '标注删除成功' });
-                            setTimeout(() => {
-                                this.statusText = `已加载: ${this.activeFile.name} • Select模式下悬停标注框查看标签`;
-                                this.statusClass = 'loaded';
-                            }, 2000);
-                        }
+                        this.$confirm('确定要删除这个标注吗？', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning',
+                        })
+                            .then(() => {
+                                this.$emit('annotation-deleted', this.selectedAnnotationId);
+                                setTimeout(() => {
+                                    this.statusText = `已加载: ${this.activeFile.name} • Select模式下悬停标注框查看标签`;
+                                    this.statusClass = 'loaded';
+                                }, 2000);
+                            })
+                            .catch(() => {
+                                this.$emit('message', { type: 'info', message: '已取消删除' });
+                            });
                     }
                     break;
                 case 'fit':
@@ -1152,7 +1156,6 @@ export default {
                     break;
             }
         },
-
         toggleFullscreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(() => {

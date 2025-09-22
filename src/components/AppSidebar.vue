@@ -399,7 +399,6 @@ export default {
             if (!window.ResizeObserver || !this.$refs.collapsedContent) return;
 
             this.resizeObserver = new ResizeObserver(entries => {
-                // 使用requestAnimationFrame确保DOM更新完成后再计算
                 requestAnimationFrame(() => {
                     this.calculateFilesPerPage();
                 });
@@ -555,17 +554,31 @@ export default {
         },
 
         deleteFile(fileId) {
-            if (confirm('确定要删除这个文件吗？删除后标注数据也会丢失。')) {
-                this.$emit('file-deleted', fileId);
-                this.$emit('message', { type: 'success', message: '文件删除成功' });
-            }
+            this.$confirm('确定要删除这个文件吗？删除后标注数据也会丢失。', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            })
+                .then(() => {
+                    this.$emit('file-deleted', fileId);
+                })
+                .catch(() => {
+                    this.$emit('message', { type: 'info', message: '已取消删除' });
+                });
         },
 
         clearAllFiles() {
-            if (confirm('确定要清空所有文件吗？所有标注数据都会丢失。')) {
-                this.$emit('files-cleared');
-                this.$emit('message', { type: 'success', message: '已清空所有文件' });
-            }
+            this.$confirm('确定要清空所有文件吗？所有标注数据都会丢失。', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            })
+                .then(() => {
+                    this.$emit('files-cleared');
+                })
+                .catch(() => {
+                    this.$emit('message', { type: 'info', message: '已取消清空' });
+                });
         },
 
         triggerFileInput() {
